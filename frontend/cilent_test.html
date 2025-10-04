@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8">
+<input id="t" placeholder="paste JWT" style="width:420px">
+<button onclick="c()">Connect</button>
+<button onclick="j()">Join #general</button>
+<input id="m" placeholder="message">
+<button onclick="s()">Send</button>
+<pre id="log"></pre>
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+let socket, log=(x)=>document.querySelector('#log').textContent+=x+"\n";
+function c(){ socket=io("http://localhost:3000",{auth:{token:document.querySelector('#t').value}});
+  socket.on("connect",()=>log("connected "+socket.id));
+  socket.on("connect_error",e=>log("error "+e.message));
+  socket.on("message:new",m=>log("new "+JSON.stringify(m)));
+}
+function j(){ socket.emit("join","general"); log("joined general"); }
+function s(){ socket.emit("message:send",{text:document.querySelector('#m').value,room:"general"},res=>log("ack "+JSON.stringify(res))); }
+</script>
