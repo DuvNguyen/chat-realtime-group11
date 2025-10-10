@@ -1,11 +1,31 @@
 version: '3.8'
 
 services:
+  # === Backend Service ===
   backend:
-    build: .
+    build: ./backend                     # Đường dẫn Dockerfile backend
     container_name: chat-backend
     ports:
-      - "3000:3000"          # Map cổng máy thật -> container
+      - "3000:3000"                      # Map port host -> container
     env_file:
-      - .env                 # Dùng biến môi trường trong file .env
-    restart: always          # Tự khởi động lại khi container bị dừng
+      - ./backend/.env                   # Dùng biến môi trường của backend
+    restart: always                      # Tự khởi động lại nếu container dừng
+    networks:
+      - chatnet
+
+  # === Frontend Service ===
+  frontend:
+    build: ./frontend                    # Đường dẫn Dockerfile frontend
+    container_name: chat-frontend
+    ports:
+      - "80:80"                          # Nginx serve trên port 80
+    restart: always
+    depends_on:
+      - backend                          # Chờ backend chạy trước
+    networks:
+      - chatnet
+
+# === Mạng nội bộ giữa frontend và backend ===
+networks:
+  chatnet:
+    driver: bridge
