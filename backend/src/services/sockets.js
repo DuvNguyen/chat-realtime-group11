@@ -9,7 +9,11 @@ export function createSocketServer(httpServer, corsOrigin) {
 
   const io = new Server(httpServer, {
     cors: {
-      origin: origins,            // <- cho phép 127.0.0.1:5500
+      origin: [
+      "http://54.252.58.100",
+      "http://54.252.58.100:5173",
+      "http://localhost:5173"
+    ],
       methods: ["GET", "POST"],
       credentials: true
     }
@@ -33,7 +37,11 @@ export function createSocketServer(httpServer, corsOrigin) {
     socket.user = { id: token || "anonymous" }; 
     next();
   });
-
+[
+      "http://54.252.58.100",
+      "http://54.252.58.100:5173",
+      "http://localhost:5173"
+    ],
 
   io.on("connection", (socket) => {
     socket.on("join", (room) => room && socket.join(room));

@@ -22,7 +22,7 @@ app.use("/api/messages", messageRoutes);
 app.get("/health", (_, res) => res.json({ ok: true }));
 
 // createSocketServer(server, process.env.CORS_ORIGIN || "*");
-createSocketServer(server, "http://localhost:5173,http://localhost:5174");
+createSocketServer(server, "http://54.252.58.100:5173,http://54.252.58.100:5174");
 
 
 const PORT = process.env.PORT || 3000;
