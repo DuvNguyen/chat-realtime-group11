@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: chat-backend
+    ports:
+      - "3000:3000"          # Map cổng máy thật -> container
+    env_file:
+      - .env                 # Dùng biến môi trường trong file .env
+    restart: always          # Tự khởi động lại khi container bị dừng
